@@ -2,36 +2,381 @@
 <html>
 <head>
 	<title>My Portfolio</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="script.js"></script>
+
 </head>
 <body>
-	<header>
-		<h1>Welcome to My Website</h1>
-	</header>
-	<nav>
-		<ul>
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Projects</a></li>
-			<li><a href="#">Contact</a></li>
-		</ul>
-	</nav>
-	<main>
-		<h2>About Me</h2>
-		<p>Hello, and welcome to my portfolio website! 
-            I'm a college student with a strong desire 
-            to launch my career in software engineering. 
-            I'm a hard-working and imaginative individual who likes to think deeply 
-            with a passion for learning and a strong work ethic. 
-            I'm excited to share my work with you and showcase the skills 
-            and knowledge I've gained so far through my education and personal projects. </p>
-		<h2>My Portfolio</h2>
-		<ul>
-			<li><a href="#">Project 1</a></li>
-			<li><a href="#">Project 2</a></li>
-			<li><a href="#">Project 3</a></li>
-		</ul>
-	</main>
+    
+    <!-- Heading -->
+    <div id = "welc"> 
+    <h1 class="fade-in" align="center">Welcome to My Website</h1>
+    </div>
+    
+    <!-- About Me section -->
+    <h2 id="aboutme"> About Me</h2>
+	<div class = "aboutme slide-up" > 
+        <p> Welcome to my portfolio website! 
+        As a college student, I'm focused on pursuing a career path in software engineering. 
+        I'm a diligent and imaginative individual with a passion for learning and a strong work ethic. 
+        I'm excited to share my work with you and demonstrate the skills and knowledge 
+        I've acquired through my education and personal projects.
+    </p> </div>
+    
+    <!-- Projects -->
+    <div class="flex-container">
+        <div class="flex-item">
+            <p> Currently Working On A Chatbot </p>
+            <div class="code-box">    
+                <pre>
+                    <code>
+import random
+import pandas as pd 
+
+def csv_create():
+    responses = {
+    "hello": ["Hello there!", "Hi, how are you?"],
+    "how are you": ["I'm doing well, thanks for asking!", "I'm a bot, so I don't have feelings, but I'm functioning normally."],
+    "what is your name": ["My name is ChatBot!", "I'm ChatBot, nice to meet you."],
+    "bye": ["Goodbye!", "See you later!"],
+    "default": ["I'm sorry, I didn't understand what you said. Can you please rephrase that?", "Could you try asking me something else?"]
+    }
+    dataframe = pd.Dataframe(responses)
+    dataframe.to_csv('dataset.csv', index = False)
+def csv_read():
+    dataframe = pd.read_csv('dataset.csv')
+    responses = dataframe.to_dict('records')
+    print(responses)
+    return responses
+responses = csv_read()
+# Define a function to respond to user input
+def respond(user_input):
+    # Convert user input to lowercase
+    user_input = user_input.lower()
+    
+    # Check if user input matches a key in the responses dictionary
+    if user_input in responses:
+        # If so, select a random response from the corresponding list
+        bot_response = random.choice(responses[user_input])
+    else:
+        # If not, select a default response
+        bot_response = random.choice(responses["default"])
+    # Return the bot's response
+    return bot_response
+
+# Prompt the user for input and respond until the user enters "bye"
+def conservation():
+    while True:
+        user_input = input("You: ")
+        bot_response = respond(user_input)
+        print("ChatBot:", bot_response)
+        if user_input == "bye":
+            break
+                    </code>
+                </pre>
+                    
+                    
+            
+              </div> 
+        </div>
+        <div class="flex-item">
+            <p> Past Project: Tax Calculator </p>
+            <div class="code-box">
+                
+                <pre>
+                    <code>
+import csv
+from datetime import date
+today=date.today()
+x=today.strftime("%d-%m-%Y")
+#gives current time
+employees=[]
+salary=float(input("enter your income"))
+def tax_func(salary)->float:
+    #income tax calculator
+    if salary<=12570:
+        tax=0
+        #personal allowance 12,570 0%
+        #no tax if salary is less than/equal to 12570
+    elif salary<=50270:
+        tax=(salary-12570)*0.2
+        #basic rate 12,571 to 50,270 20%
+    elif salary<=150000:
+        #higher rate 50,270 to 150,000 40%
+        tax=(50270-12570)*0.2
+        tax+=(salary-50270)*0.4
+    elif salary>150000:
+        #additional rate over £150,000 45%
+        tax=(50270-12570)*0.2
+        tax+=(150000-50270-12570)*0.4
+        tax+=(salary-150000)*0.45
+    return tax
+def student_financer(salary)->float:
+    #calculate student payment, salary-student threshold x 9%
+    return(salary-(2274*12))*0.09
+def national_insurance(salary)->float:
+    #national insurance calculator
+    lower=1048.01*12
+    higher=4189*12
+    if salary<=lower:
+        ni=0
+    elif salary<=higher:
+        ni=(salary-lower)*0.12
+    elif salary>higher:
+        ni_lower=(higher-lower)*0.12
+        ni_higher=(salary-higher)*0.2
+        ni=ni_lower+ni_higher
+    return ni
+def pension(salary)->float:
+    #pension calculator
+    if salary>=84193.99:
+        p=salary*0.117
+    elif salary>=61742.99:
+        p=salary*0.113
+    elif salary>=46586.99:
+        p=salary*0.102
+    elif salary>=39290.99:
+        p=salary*0.096
+    elif salary>=29187.99:
+        p=salary*0.086
+    else:
+        p=salary*0.074
+    return p
+tax=tax_func(salary)
+sp=student_financer(salary)
+ni=national_insurance(salary)
+p=pension(salary)
+#calls all functions to place it together in payslip module
+def payslip(salary, tax, national_insurance, student_payment, pension,name):
+    file_name=str(x)
+    file_name=file_name+"_"+name
+    print(file_name)
+    #creates file with date created and employee name, and prints it 
+    file=open(file_name+".txt","w")
+    file.write("Name:            \t"+ name)
+    file.write("salary:          \t"+("{:.2f}".format(salary)))
+    file.write("tax:             \t"+("{:.2f}".format(tax)))
+    file.write("national insurance tax:\t"+("{:.2f}".format(national_insurance)))
+    file.write("pension contribution:\t"+("{:.2f}".format(pension)))
+    file.write("student payment tax:\t"+("{:.2f}".format(student_payment)))
+    #writes to file, the tax details 
+    taxed_salary=salary-(tax+student_payment+national_insurance+pension)
+    dp=("{:.2f}".format(taxed_salary))
+    #calculates salary after tax and places it into 2dp format 
+    filewrite="salary after tax:  \t"+ dp+"\n"
+    file.write(filewrite)
+def database_create():
+    #initial function to create employee database csv file 
+    salary=[["Watts",45000],["Conner",1000],["Virk",30000],["Macdonald",15000]]
+    file=open("employee_database.csv","w", newline="")
+    csv_writer=csv.writer(file)
+    for i in salary:
+        csv_writer.writerow(i)
+    file.close()
+def database_read():
+    #function to read database of employees 
+    employees=[]
+    file=open("employee_database.csv","r")
+    file_reader=csv.reader(file)
+    for row in file_reader:
+        employees.append(row)
+    file.close()
+    print(employees)
+    return employees
+    #returns array of employees from csv file
+def payslip_spawn(employees):
+    for i in employees:
+        print(i)
+        name=i[0]
+        salary=i[1]
+        salary=int(salary)
+        payslip(salary, tax, ni, sp, p,name)
+        #displays payslip
+        
+employees=database_read()
+#calls function to create employees array to use it in payslip_spawn
+payslip_spawn(employees)
+                    </code>
+                    </pre>
+            </div>
+
+
+            
+        </div>
+        <div class="flex-item">
+            <p> Past Project: Credit Card Checker </p>
+            <div class="code-box">
+<pre>
+<code>
+#include <cs50.h>
+#include <stdio.h>
+int checksum(long number, int i);
+int subcheck(long number);
+//subroutines
+int main(void)
+{
+    int i = 0;
+    //global variable used multiple times
+    long number = get_long("Enter a valid credit card number");
+    //gets credit card number (large number so long data type is used)
+    long number_l = number;
+    //creates seperate variable to calculate card length
+    while (number_l > 0)
+    {
+        number_l /= 10;
+        i++;
+        //works out the length of card number by taking away the digits 1 by 1 with /10
+    }
+    int value = checksum(number, i);
+    //calls subroutine to check if all digits are valid via checksum validation
+    for (int k = 0; k < i - 2; k++)
+    {
+        number /= 10;
+        //shortens card number to the first two digits
+    }
+    int digit2 = number % 10;
+    //gets the 2nd digit of card number after it's been shortened
+    number /= 10;
+    //takes a digit off so only 1st digit left
+    int digit1 = number % 10;
+    //gets the 1st digit of card number after it's been shortened
+    if (value == 1 && (i == 15 || i == 16 || i == 13))
+        //if checksum was valid
+    {
+        if (i == 15 && ((digit1 == 3 && digit2 == 7) || (digit1 == 3 && digit2 == 4)))
+        {
+            //if card length is 15 and first 2 digits are 37 or 34
+            printf("AMEX\n");
+        }
+        else if (i == 16)
+            //if card length is 16
+        {
+            if (digit1 == 4)
+            {
+                //if first digit is 4
+                printf("VISA\n");
+            }
+            else if (digit1 == 5 && (digit2 == 1 || digit2 == 2 || digit2 == 3 || digit2 == 4 || digit2 == 5))
+            {
+                //if first 2 digits are 51, 52, 53, 54, or 55
+                printf("MASTERCARD\n");
+            }
+            else
+            {
+                printf("INVALID\n");
+            }
+        }
+        else if (i == 13 && digit1 == 4)
+        {
+            //if card length is 13 and first digit is 4
+            printf("VISA\n");
+        }
+        else
+        {
+            printf("INVALID\n");
+        }
+
+    }
+    else
+    {
+        //card must be invalid if it doesn't fulfil any of the above
+        printf("INVALID\n");
+    }
+
+}
+int checksum(long number, int i)
+{
+    //Luhn's Algorithm (checksum)
+    int numbercs1 = number % 10;
+    //gets last digit (dividing by 10 to get remainder gives the digit itself)
+    number /= 10;
+    //moves to next digit (the second-last digit)
+    int numbercs2 = subcheck(number);
+    //numbercs1 and numbercs2 outside of loop to get the initial values so the following can be added on
+    for (int r = 0; r < i; r++)
+    {
+        //loops through the entire card number
+        number /= 10;
+        //moves to next digit
+        numbercs1 += number % 10;
+        //gets digit for the add sum part of the checksum validation
+        number /= 10;
+        numbercs2 += subcheck(number);
+        //gets digit for the 'multiply every other digit by 2' part of the checksum
+    }
+    int numbercs = numbercs1 + numbercs2;
+    //adds the final numbers from add sum and multipled sum together
+    if (numbercs % 10 == 0)
+        //checks if the last digit is 0 (total modulo congruent 10 to 0)
+    {
+        return 1;
+        //if it is, returns 1 (true)
+    }
+    else
+    {
+        return 0;
+        //if not, returns 0 (false)
+    }
+}
+int subcheck(long number)
+{
+    int numbercs2 = (number % 10) * 2;
+    //multiples digit taken from number by 2
+    if (numbercs2 > 9)
+        //if the digit multipled is 10 or over, it becomes 2 digits
+    {
+        //so it needs to be split into individual digits
+        int num1 = numbercs2 % 10;
+        numbercs2 /= 10;
+        //moves to next digit of the number multipled
+        int num2 = numbercs2 % 10;
+        return num1 + num2;
+        //returns sum of the split digits
+    }
+    return numbercs2;
+    //if it doesn't need to be split, returns multipled number as it is
+}         
+</code>
+</pre>
+        </div>
+    </div>
+    
+    <!-- Skills section -->
+    <li> Problem-solving
+    Completed various problems on LeetCode.
+    </li>
+    <li>
+    •	Mathematics 
+    Applied mathematical knowledge to create a tax calculator program.
+    </li>
+    <li>
+    •	Creativity
+    Designed a unique and aesthetically pleasing website for my portfolio using HTML, CSS and my art.
+    </li>
+    <li>
+    •	Python 
+    Developed several programming projects using Python. 
+    </li>
+    •	Project Collaboration 
+    <li>
+    Collaborated with others as a volunteer proofreader at Distributed Proofreaders to ensure high-quality reads for various projects. 
+    </li>
+
+
+    
+    <!-- Contact section -->
+
+    <p class ="slide-up" align="center"> Github/To see all of my projects</p>
+    <li> Github: https://github.com/BaoThyNguyen17 </li>
+    <img src="images/doodle.png" width="100%" height="100%">
+
+
+    
+    <!-- Footer section -->
+<div id = "footer"> 
 	<footer>
-		<p>&copy; 2023 My Website</p>
+		<p>&copy; 2023 </p>
 	</footer>
+</div>
 </body>
 </html
